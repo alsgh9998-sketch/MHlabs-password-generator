@@ -1,43 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+    <title>MH Labs 블로그 - 최신 보안 소식과 팁</title>
+    <meta name="description" content="MH Labs 블로그에서 최신 사이버 보안 동향, 전문가의 조언, 그리고 온라인에서 자신을 보호하는 방법에 대한 유용한 정보들을 만나보세요.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <nav>
+            <a href="index.html" class="logo">MH Labs</a>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="about.html">소개</a></li>
+                <li><a href="blog.html">블로그</a></li>
+                <li><a href="contact.html">문의하기</a></li>
             </ul>
         </nav>
-    </header>
-    <main>
-        <h1>Blog</h1>
-        <div class="blog-post-list">
-            <div class="blog-post-item">
-                <h2><a href="blog-post-1.html">The Dangers of Weak Passwords</a></h2>
-                <p>Weak passwords are one of the biggest threats to your online security. In this post, we'll explore the risks associated with using weak passwords and why it's so important to use strong, unique passwords for all of your accounts.</p>
-            </div>
-            <div class="blog-post-item">
-                <h2><a href="blog-post-2.html">5 Tips for Better Password Management</a></h2>
-                <p>Managing dozens of passwords can be a challenge. This post provides five practical tips to help you manage your passwords effectively and keep your accounts secure without driving you crazy.</p>
-            </div>
+        <div class="hero">
+            <h1>MH Labs 블로그</h1>
+            <p>디지털 세상을 더 안전하게 항해하는 데 필요한 모든 지식과 정보를 공유합니다.</p>
         </div>
+    </header>
+
+    <main>
+        <section class="blog-list">
+            <h2>전체 게시글</h2>
+            <div class="blog-post-item">
+                <h3><a href="blog-post-1.html">온라인 보안의 첫걸음: 강력한 비밀번호의 중요성</a></h3>
+                <p class="post-meta">2024년 5월 20일</p>
+                <p>온라인 계정의 80% 이상이 취약한 비밀번호로 인해 해킹 위험에 노출되어 있다는 사실을 알고 계셨나요? 이 글에서는 강력한 비밀번호가 왜 중요한지, 그리고 어떻게 우리의 소중한 개인정보를 지킬 수 있는지 심도 있게 다룹니다...</p>
+                <a href="blog-post-1.html" class="read-more">더 읽어보기</a>
+            </div>
+            <div class="blog-post-item">
+                <h3><a href="blog-post-2.html">2단계 인증(2FA)으로 계정을 더 안전하게 보호하는 방법</a></h3>
+                <p class="post-meta">2024년 5월 15일</p>
+                <p>비밀번호만으로는 완벽한 보안을 보장할 수 없습니다. 2단계 인증(2FA)은 비밀번호가 유출되더라도 해커로부터 계정을 보호할 수 있는 가장 효과적인 방법 중 하나입니다. 설정 방법과 장점을 자세히 설명합니다...</p>
+                <a href="blog-post-2.html" class="read-more">더 읽어보기</a>
+            </div>
+            <div class="blog-post-item">
+                <h3><a href="#">피싱 이메일, 더 이상 속지 마세요! 피싱 공격 식별 및 예방법</a></h3>
+                <p class="post-meta">2024년 5월 10일</p>
+                <p>최근 교묘해지는 피싱 이메일 때문에 많은 사람들이 피해를 보고 있습니다. 이 글에서는 실제 사례를 통해 피싱 이메일을 구별하는 방법과, 피싱 공격으로부터 자신을 보호할 수 있는 구체적인 예방 수칙을 알려드립니다...</p>
+                <a href="#" class="read-more">더 읽어보기</a>
+            </div>
+        </section>
     </main>
+
     <footer>
-        <p>&copy; 2023 Password Generator. All rights reserved.</p>
-        <ul>
-            <li><a href="about.html">About</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+        <div class="footer-links">
+            <a href="privacy.html">개인정보처리방침</a>
+            <a href="terms.html">이용약관</a>
+        </div>
+        <p>&copy; 2024 MH Labs. All rights reserved.</p>
     </footer>
 </body>
 </html>
