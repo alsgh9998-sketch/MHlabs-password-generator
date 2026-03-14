@@ -12,7 +12,6 @@
     --container-bg: white;
     --text-color: #1a1a1a;
     --result-bg: #e9ecef;
-    --char-bg: rgba(0, 0, 0, 0.05);
     --button-bg: #0077ff;
     --button-hover-bg: #005fcc;
     --copy-button-bg: #28a745;
@@ -22,9 +21,6 @@
     --switch-slider-bg: white;
     --switch-slider-checked-bg: #0077ff;
     --input-border-color: #ccc;
-    --uppercase-color: #0d6efd;
-    --number-color: #198754;
-    --symbol-color: #dc3545;
 }
 
 body[data-theme="dark"] {
@@ -32,13 +28,9 @@ body[data-theme="dark"] {
     --container-bg: #1e1e1e;
     --text-color: #f1f1f1;
     --result-bg: #2a2a2a;
-    --char-bg: rgba(255, 255, 255, 0.1);
     --shadow-color: rgba(0, 0, 0, 0.6);
     --switch-bg: #555;
     --input-border-color: #444;
-    --uppercase-color: #4dabf7;
-    --number-color: #69db7c;
-    --symbol-color: #ff8787;
 }
 
 body {
@@ -55,18 +47,28 @@ body {
 }
 
 .result-wrapper {width:90%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:1rem}
-.result {width:100%;padding:20px;background:var(--container-bg);border-radius:12px;box-shadow:0 10px 25px var(--shadow-color);word-break:break-all;font-family:'Roboto Mono',monospace;font-size:1.75rem;min-height:50px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;box-sizing:border-box}
-.result span {padding:.2em .4em;border-radius:6px;background-color:var(--char-bg);line-height:1;transition:background-color .3s,color .3s}
+.result {
+    width: 100%;
+    padding: 20px;
+    background: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px var(--shadow-color);
+    word-break: break-all;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 2.25rem; /* Increased font size for better readability */
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
 .settings-container {background:var(--container-bg);padding:30px 40px;border-radius:12px;width:450px;box-shadow:0 10px 25px var(--shadow-color);transition:background .3s,box-shadow .3s;box-sizing:border-box}
 
 .header-container {width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem;}
 h1 {margin:0;font-size:1.75rem;text-align:left;white-space:nowrap;}
 .controls-wrapper { display: flex; align-items: center; gap: 1rem; }
-
-.result .uppercase { color: var(--uppercase-color); font-weight: 700; }
-.result .lowercase { color: var(--text-color); }
-.result .number { color: var(--number-color); font-weight: 700; }
-.result .symbol { color: var(--symbol-color); font-weight: 700; }
 
 button {margin-top:20px;width:100%;padding:14px;border:none;background:var(--button-bg);color:white;font-size:17px;font-weight:700;border-radius:8px;cursor:pointer;transition:background-color .2s}
 button:hover {background:var(--button-hover-bg)}
@@ -91,7 +93,6 @@ button:hover {background:var(--button-hover-bg)}
     color: var(--text-color);
     font-size: 0.9rem;
 }
-
 </style>
 </head>
 <body>
@@ -171,6 +172,8 @@ function updateLanguage(lang) {
             el.textContent = translations[lang][key];
         }
     });
+    // When language changes, we need to regenerate password to update placeholder text if needed
+    generatePassword();
 }
 
 langSelector.addEventListener('change', (e) => {
@@ -182,7 +185,6 @@ const userLang = navigator.language || navigator.userLanguage;
 if (userLang.startsWith('ko')) {
     langSelector.value = 'ko';
 }
-updateLanguage(langSelector.value);
 
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -211,7 +213,7 @@ function generatePassword() {
 
     const currentLang = langSelector.value;
     if(availableChars.length === 0 || length <= 0){
-        resultEl.innerHTML = translations[currentLang].selectOption;
+        resultEl.textContent = translations[currentLang].selectOption;
         resultEl.dataset.rawPassword = "";
         return;
     }
@@ -229,20 +231,10 @@ function generatePassword() {
 
     password = password.sort(() => Math.random() - 0.5);
     
-    let resultHtml = "";
-    let rawPassword = "";
-
-    password.forEach(char => {
-        rawPassword += char;
-        let charType = 'lowercase';
-        if (uppercaseChars.includes(char)) charType = 'uppercase';
-        else if (numberChars.includes(char)) charType = 'number';
-        else if (symbolChars.includes(char)) charType = 'symbol';
-        resultHtml += `<span class="${charType}">${char}</span>`;
-    });
+    const finalPassword = password.join('');
     
-    resultEl.dataset.rawPassword = rawPassword;
-    resultEl.innerHTML = resultHtml;
+    resultEl.textContent = finalPassword;
+    resultEl.dataset.rawPassword = finalPassword;
 }
 
 function copyPassword(event) {
@@ -251,9 +243,12 @@ function copyPassword(event) {
     const currentLang = langSelector.value;
     navigator.clipboard.writeText(text).then(() => {
         const button = event.target;
-        const originalText = button.textContent;
+        // We need to find the original text from translations
+        const originalTextKey = button.dataset.langKey;
+        const originalText = translations[currentLang][originalTextKey];
+
         button.textContent = translations[currentLang].copied;
-        setTimeout(() => { button.textContent = translations[currentLang].copyButton; }, 1500);
+        setTimeout(() => { button.textContent = originalText; }, 1500);
     });
 }
 
@@ -261,7 +256,9 @@ document.querySelectorAll('.settings-container input').forEach(input => {
     input.addEventListener('input', generatePassword);
 });
 
-window.addEventListener('load', generatePassword);
+window.addEventListener('load', () => {
+    updateLanguage(langSelector.value);
+});
 
 </script>
 </body>
